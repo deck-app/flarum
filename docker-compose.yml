@@ -1,0 +1,38 @@
+version: "3"
+services:
+  flarum:
+    image: "mondedie/flarum:stable"
+    tty: true
+    environment:
+      - "FORUM_URL=https://${COMPOSE_PROJECT_NAME}.stacks.run"
+      - "DB_HOST=mysql"
+      - "DB_USER=${MYSQL_USER}"
+      - "DB_PASS=${MYSQL_PASSWORD}"
+      - "DB_NAME=${MYSQL_DATABASE}"
+      - "FLARUM_ADMIN_USER=admin"
+      - "FLARUM_ADMIN_PASS=password"
+      - "FLARUM_ADMIN_MAIL=admin@stacks.run"
+      - "FLARUM_TITLE=Flarum - DockerStacks"
+    volumes:
+      - "${DATA_PATH_HOST}/flarum/assets:/flarum/app/public/assets"
+      - "${DATA_PATH_HOST}/flarum/extensions:/flarum/app/extensions"
+      - "${DATA_PATH_HOST}/flarum/nginx:/etc/nginx/conf.d"
+    ports:
+      - "${FLARUM_HTTP_PORT}:8888"
+    depends_on:
+      - "mysql"
+  mysql:
+    image: "deckapp/mysql:v10.1.19"
+    environment:
+      - "MYSQL_DATABASE=${MYSQL_DATABASE}"
+      - "MYSQL_USER=${MYSQL_USER}"
+      - "MYSQL_PASSWORD=${MYSQL_PASSWORD}"
+      - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}"
+    volumes:
+      - "${DATA_PATH_HOST}/mysql:/var/lib/mysql"
+      - "${MYSQL_PATH}:/etc/mysql/"
+    ports:
+      - "${MYSQL_PORT}:3306"
+volumes:
+  mysql:
+    driver: "${VOLUMES_DRIVER}"
