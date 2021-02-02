@@ -52,8 +52,8 @@ user:
 
 #System defaults
 system:
-  # show_localpath_selector:
-  #   true
+  show_localpath_selector:
+    true
   #For collecting and storing DB in .env
   #db/user/password
   db_credentials:
@@ -63,4 +63,6 @@ system:
     http:
       FLARUM_HTTP_PORT
     others:
-      MYSQL_PORT
+      - MYSQL_PORT
+      - PHPMYADMIN_HTTP_PORT
+      - MAILHOG_HTTP_PORT
