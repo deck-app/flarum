@@ -1,53 +1,26 @@
 version: "3"
 services:
-  httpd:
-    build: http
-    depends_on:
-      - database
-      - mailhog
-    links:
-      - database:db
-      - mailhog:mail
-    ports:
-      - ${FLARUM_HTTP_PORT}:8080
+  flarum:
+    image: mondedie/flarum:stable
+    env_file:
+      - .env
     volumes:
-      - ${APP_CODE_PATH_HOST}/www_html:/var/www/html
-      - ${APP_CODE_PATH_HOST}/composer:/root/.composer
+      - ${APP_CODE_PATH_HOST}/assets:/flarum/app/public/assets
+      - ${APP_CODE_PATH_HOST}/extensions:/flarum/app/extensions
+      - ${APP_CODE_PATH_HOST}/nginx:/etc/nginx/conf.d
+    ports:
+      - ${FLARUM_HTTP_PORT}:8888
+    depends_on:
+      - mariadb
 
-  database:
-    image: mysql:5.7
+  mariadb:
+    image: mariadb:10.5
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-    ports:
-      - ${MYSQL_PORT}:3306
-    expose:
-      - "3306"
     volumes:
-      - ${DATA_PATH_HOST}/database:/var/lib/mysql
-      - ./config/database/mysql-conf.d:/etc/mysql/conf.d
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    depends_on:
-      - database
-    links:
-      - database:db
-    ports:
-      - ${PHPMYADMIN_HTTP_PORT}:80
-    environment:
-      PMA_USER: ${PMA_USER}
-      PMA_PASSWORD: ${PMA_PASSWORD}
-
-
-  mailhog:
-      image: mailhog/mailhog:latest
-      ports:
-#        - "1025:1025"
-        - "${MAILHOG_HTTP_PORT}:8025"
-      expose:
-        - 1025
+      - ${DATA_PATH_HOST}/mysql/db:/var/lib/mysql
 volumes:
         {}
