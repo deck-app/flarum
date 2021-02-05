@@ -63,6 +63,3 @@ system:
     http:
       FLARUM_HTTP_PORT
     others:
-      - MYSQL_PORT
-      - PHPMYADMIN_HTTP_PORT
-      - MAILHOG_HTTP_PORT
