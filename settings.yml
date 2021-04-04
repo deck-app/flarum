@@ -62,4 +62,3 @@ system:
   ports:
     http:
       FLARUM_HTTP_PORT
-    others:
