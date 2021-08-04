@@ -1,26 +1,26 @@
 version: "3"
 services:
   flarum:
-    image: mondedie/flarum:stable
+    image: 'mondedie/flarum:stable'
     env_file:
       - .env
     volumes:
-      - ${APP_CODE_PATH_HOST}/assets:/flarum/app/public/assets
-      - ${APP_CODE_PATH_HOST}/extensions:/flarum/app/extensions
-      - ${APP_CODE_PATH_HOST}/nginx:/etc/nginx/conf.d
+      - '${APP_CODE_PATH_HOST}/assets:/flarum/app/public/assets'
+      - '${APP_CODE_PATH_HOST}/extensions:/flarum/app/extensions'
+      - '${APP_CODE_PATH_HOST}/nginx:/etc/nginx/conf.d'
     ports:
-      - ${FLARUM_HTTP_PORT}:8888
+      - '${FLARUM_HTTP_PORT}:8888'
     depends_on:
-      - mariadb
+      - 'mariadb'
 
   mariadb:
-    image: mariadb:10.5
+    image: 'mariadb:10.5'
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - 'MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}'
+      - 'MYSQL_DATABASE=${DB_NAME}'
+      - 'MYSQL_USER=${DB_USER}'
+      - 'MYSQL_PASSWORD=${DB_PASSWORD}'
     volumes:
-      - ${DATA_PATH_HOST}/mysql/db:/var/lib/mysql
+      - '${DATA_PATH_HOST}/mysql/db:/var/lib/mysql'
 volumes:
         {}
